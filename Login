@@ -1,0 +1,110 @@
+import Insan
+from Insan import *
+from Insan import GirisBilgileri
+from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from tkinter.messagebox import showinfo
+import VTMotoru
+class Giris(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+        global GirisPenceresi
+        global kullaniciAdiGirisi
+        global sifreGirisi
+        global kullaniciAdi
+        global sifre
+        
+        GirisPenceresi = tk.Tk()
+        GirisPenceresi.geometry("300x250")
+        GirisPenceresi.title("Metin Analiz Programı V.0.1 Giriş Penceresi")
+        kullaniciAdi = tk.StringVar()
+        sifre = tk.StringVar()
+        kullaniciAdiEtiketi = tk.Label(GirisPenceresi, text="Kullanıcı Adınız * ")
+        kullaniciAdiEtiketi.pack()
+        kullaniciAdiGirisi = tk.Entry(GirisPenceresi, textvariable=kullaniciAdi)
+        kullaniciAdiGirisi.pack()
+        sifreEtiketi = tk.Label(GirisPenceresi, text="Şifreniz * ")
+        sifreEtiketi.pack()
+        sifreGirisi = tk.Entry(GirisPenceresi, textvariable=sifre, show='*')
+        sifreGirisi.pack()
+        girisDugme=tk.Button(GirisPenceresi, text="Giriş", height="2", width="30", command = self.GirisDogrulama).pack()
+        boslukEtiket=tk.Label(GirisPenceresi, text="").pack()
+        kayitDugme=tk.Button(GirisPenceresi, text="Kayıt", height="2", width="30", command = self.Kayit).pack()
+    def Kayit(self):
+        global KayitPenceresi
+        global kullaniciAdiGirisi
+        global sifreGirisi
+        global bilgiEtiketi
+        KayitPenceresi = tk.Toplevel(GirisPenceresi)
+        KayitPenceresi.title("Kayıt Penceresi")
+        KayitPenceresi.geometry("300x250")
+        bilgiEtiketi=tk.Label(KayitPenceresi, text="Aşağıdaki Alanlara Bilgilerinizi Giriniz", bg="blue").pack()
+        yineBoslukEtiket=tk.Label(KayitPenceresi, text="").pack()
+        kullaniciAdiEtiketi= tk.Label(KayitPenceresi, text="Kullanıcı Adınız * ")
+        kullaniciAdiEtiketi.pack()
+        kullaniciAdiGirisi = tk.Entry(KayitPenceresi, textvariable=kullaniciAdi)
+        kullaniciAdiGirisi.pack()
+        sifreEtiketi = tk.Label(KayitPenceresi, text="Şifreniz * ")
+        sifreEtiketi.pack()
+        sifreGirisi = tk.Entry(KayitPenceresi, textvariable=sifre)
+        sifreGirisi.pack()
+        kaydetDugme=tk.Button(KayitPenceresi, text="Kaydet", width=10, height=1, command = self.KullaniciKaydi).pack()
+
+    def KullaniciKaydi(self):
+        depoKullanici=kullaniciAdi.get()
+        depoSifre=sifre.get()
+        if Insan.GirisBilgileri.KullaniciAdi(depoKullanici):
+            if Insan.GirisBilgileri.Sifre(depoSifre):
+                bilgiEtiketi=tk.Label(KayitPenceresi, text="Kaydedildi", fg="green", font=("calibri", 11)).pack()
+                return True
+            else:
+                bilgiEtiketi=tk.Label(KayitPenceresi, text="Şifre Sorunu", fg="red", font=("calibri", 11)).pack()
+                return False
+        else:
+                bilgiEtiketi=tk.Label(KayitPenceresi, text="Kullanıcı Adı Sorunu", fg="red", font=("calibri", 11)).pack()
+                return False
+    def GirisDogrulama(self):
+        kullaniciAdimii=kullaniciAdi.get()
+        sifree=sifre.get()
+        if kullaniciAdi.get()!="" and Insan.GirisBilgileri.KulAdiBul(kullaniciAdimii):
+            if  sifre.get()!="" and Insan.GirisBilgileri.SifreBul(sifree):
+                self.GirisBasarili()
+            else:
+                self.SifreTaninmadi()
+        else:
+            self.KullaniciBulunamadi()
+        kullaniciAdiGirisi.delete(0, END)
+        sifreGirisi.delete(0, END)
+    def GirisBasarili(self):
+        global GirisBasariliPenceresi
+        GirisBasariliPenceresi = tk.Toplevel(GirisPenceresi)
+        GirisBasariliPenceresi("Giriş Kontrol")
+        GirisBasariliPenceresi.geometry("150x100")
+        girisBilgisi=tk.Label(GirisBasariliPenceresi, text="Giriş Başarılı").pack()
+        tk.Button(GirisBasariliPenceresi, text="Tamam", command=self.delete_login_success).pack()
+    def SifreTaninmadi(self):
+        global SifreTaninmadiPenceresi
+        SifreTaninmadiPenceresi = tk.Toplevel(GirisPenceresi)
+        SifreTaninmadiPenceresi.title("Kayıt İŞlemleri")
+        SifreTaninmadiPenceresi.geometry("150x100")
+        bilgiEtiketi=tk.Label(SifreTaninmadiPenceresi, text="Hatalı Şifre").pack()
+        tk.Button(SifreTaninmadiPenceresi, text="OK", command=self.delete_password_not_recognised).pack()
+    def KullaniciBulunamadi(self):
+        global Kullanici
+        global KullaniciBulunamadiPenceresi
+        KullaniciBulunamadiPenceresi = tk.Toplevel(GirisPenceresi)
+        KullaniciBulunamadiPenceresi.title("Giriş İşlemleri")
+        KullaniciBulunamadiPenceresi.geometry("150x100")
+        bilgiEtiketi=tk.Label(KullaniciBulunamadiPenceresi, text="Kullanıcı Bulunamadı").pack()
+        tk.Button(KullaniciBulunamadiPenceresi, text="OK", command=self.delete_user_not_found_screen).pack()
+    def delete_login_success(self):
+        GirisBasariliPenceresi.destroy()
+
+
+    def delete_password_not_recognised(self):
+        SifreTaninmadiPenceresi.destroy()
+
+
+    def delete_user_not_found_screen(self):
+        KullaniciBulunamadiPenceresi.destroy()
