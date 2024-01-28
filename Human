@@ -1,7 +1,7 @@
 import VTMotoru
 class TemelBilgiler():
     def __init__(self):
-        baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","(aA020264020)")
+        baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","12345")
         baglantimiz.TabloOlustur("tblTemelBilgiler","Anektar","Ad","Soyad","YabanciAnektar")
     def Ad(self,ad):
         self.ad=ad.lower()
@@ -43,7 +43,7 @@ class TemelBilgiler():
 class VatandaslikBilgileri(TemelBilgiler):
     def __init__(self,ad,soyad):
         super().__init__(ad,soyad)
-        baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","(aA020264020)")
+        baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","12345")
         baglantimiz.TabloOlustur("tblVatandaslikBilgileri","Anektar","KimlikNo","DogumIl","YabanciAnektar")    
     def KimlikNo(self, kimlikNo):
         self.kimlikNo=kimlikNo
@@ -83,7 +83,7 @@ class VatandaslikBilgileri(TemelBilgiler):
         return self.sira
 class GirisBilgileri():
     def __init__(self):        
-        self.baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","(aA020264020)")
+        self.baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","12345")
         self.baglantimiz.TabloOlustur("tblGirisBilgileri", "Anektar", "KullaniciAdi", "Sifre", "YabanciAnektar")
     def KullaniciAdi(self, kullaniciAdimi:str):
         self.kullaniciAdimi=kullaniciAdimi
@@ -112,7 +112,7 @@ class IletisimBilgileri:
         self.cepTelefonu=cepTelefonu
         self.cepTelefonu2=ceptelefonu2
         self.sabitTelefon=sabitTelefon
-        self.baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","(aA020264020)")
+        self.baglantimiz=VTMotoru.VeritabaniBaglantisi("localhost","MetinAnaliziVT","root","12345")
         self.baglantimiz.TabloOlustur("tblIletisimBilgileri", "Anektar", "KullaniciAdi", "Sifre", "YabanicAnekatar")
     def IkametIl(self):
         return self.ikametIl
